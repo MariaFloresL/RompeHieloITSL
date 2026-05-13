@@ -750,7 +750,7 @@
     (function () {
       var STORAGE_KEY = "ia_quiz_resultados_2026";
       /* PEGA AQUI la URL de tu Google Apps Script cuando lo publiques */
-      var GOOGLE_SCRIPT_URL = "https://script.google.com/a/macros/itslerdo.edu.mx/s/AKfycbwxTRJZyQzeROvW94ml3l0Bs4tDddSoo0uQOL2-oyeSlYg95WLHDZ12qucmKRCOwuaR/exec";
+      var GOOGLE_SCRIPT_URL = "https://docs.google.com/spreadsheets/d/1nzZaLipl1A7qa-LK_0VNsgOZ_OcJYLA5MA-dyQ1exI4/edit?gid=0#gid=0";
 
       var Qs = [
         {
@@ -958,7 +958,7 @@
         } catch (e) { }
 
         // Envio centralizado a Google Sheets mediante Apps Script
-        if (!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL.indexOf("PEGA_AQUI") >= 0) {
+        if (!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL.indexOf("https://docs.google.com/spreadsheets/d/1nzZaLipl1A7qa-LK_0VNsgOZ_OcJYLA5MA-dyQ1exI4/edit?gid=0#gid=0") >= 0) {
           el("send-status").textContent = "Resultado guardado solo en este dispositivo. Falta pegar la URL de Apps Script.";
           return;
         }
