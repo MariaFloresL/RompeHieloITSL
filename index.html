@@ -958,7 +958,7 @@
         } catch (e) { }
 
         // Envio centralizado a Google Sheets mediante Apps Script
-        if (!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL.indexOf("PEGA_AQUI_TU_URL_DE_APPS_SCRIPT") >= 0) {
+        if (!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL.indexOf("https://script.google.com/macros/s/AKfycbytGyla30KIeVzx-sM0WGv5MxBoZuYc8L1G7W1N8wUOXijjhYYAr7cZ-ad5OYh-pJ4J/exec") >= 0) {
           el("send-status").textContent = "Resultado guardado solo en este dispositivo. Falta pegar la URL de Apps Script.";
           return;
         }
