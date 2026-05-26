@@ -2,171 +2,161 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<title>IA o Humano - Actividad 1</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel Maestro - IA o Humano</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Open+Sans:ital,wght@0,400;0,600;1,400&display=swap');
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Open+Sans:wght@400;600&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --red:#C0392B;--guinda:#6B1230;--gold:#B8860B;--gold-bg:#FBF5E0;
-  --teal:#016B78;--teal-bg:#E6F4F6;--green:#1A6B3C;--grn-bg:#E8F5EE;
-  --bg:#FFFFFF;--gray:#F2F2F4;--border:#E0E0E0;--text:#1C1C1C;--muted:#666680
+  --red:#C0392B;--guinda:#6B1230;--gold:#B8860B;
+  --teal:#016B78;--green:#1A6B3C;--grn-bg:#E8F5EE;--teal-bg:#E6F4F6;
+  --bg:#F4F4F6;--white:#FFFFFF;--border:#E0E0E0;--text:#1C1C1C;--muted:#666680
 }
-html,body{background:var(--bg);margin:0;padding:0}
-body{font-family:'Open Sans',sans-serif;color:var(--text)}
+body{font-family:'Open Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
 .top-bar{height:5px;background:linear-gradient(90deg,var(--guinda) 0%,var(--red) 60%,#C9AD2B 100%)}
-.hdr{background:var(--bg);padding:16px 20px 14px;padding-top:calc(14px + env(safe-area-inset-top,0px));border-bottom:1px solid var(--border)}
-.hdr-act{font-family:'Montserrat',sans-serif;font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--teal);margin-bottom:4px}
-.hdr h1{font-family:'Montserrat',sans-serif;font-size:clamp(1.3rem,5vw,1.8rem);font-weight:900;color:var(--red);line-height:1.1;text-transform:uppercase}
-.hdr-sub{font-family:'Montserrat',sans-serif;font-size:0.7rem;font-weight:700;color:var(--guinda);text-transform:uppercase;letter-spacing:1px;margin-top:3px}
-#s-start{padding:28px 22px 24px;text-align:center}
-.start-title{font-family:'Montserrat',sans-serif;font-size:clamp(1.3rem,6vw,1.8rem);font-weight:900;color:var(--guinda);text-transform:uppercase;line-height:1.2;margin-bottom:10px}
-.start-desc{font-size:14px;color:var(--muted);line-height:1.65;margin-bottom:20px;max-width:320px;margin-left:auto;margin-right:auto}
-.anon-note{background:var(--teal-bg);border-left:4px solid var(--teal);border-radius:8px;padding:12px 14px;margin-bottom:20px;font-size:13px;color:var(--teal);line-height:1.5;text-align:left}
-.anon-note b{font-family:'Montserrat',sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:3px}
-.chips{display:flex;gap:10px;margin-bottom:22px}
-.chip{flex:1;background:var(--gray);border-radius:10px;padding:12px 6px;text-align:center;border:1px solid var(--border)}
-.chip-n{font-family:'Montserrat',sans-serif;font-size:1.7rem;font-weight:900;color:var(--red);display:block}
-.chip-l{font-size:10px;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:0.5px}
-#s-quiz{padding:16px 20px 40px}
-.prog-row{display:flex;align-items:center;gap:10px;margin-bottom:16px}
-.prog-track{flex:1;height:6px;background:var(--border);border-radius:6px;overflow:hidden}
-.prog-fill{height:100%;background:linear-gradient(90deg,var(--guinda),var(--red));border-radius:6px;transition:width 0.4s}
-.prog-lbl{font-size:11px;color:var(--muted);font-family:'Montserrat',sans-serif;font-weight:700;white-space:nowrap}
-.cat-tag{display:inline-block;font-family:'Montserrat',sans-serif;font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;padding:4px 12px;margin-bottom:12px;border-left:3px solid}
-.ct-texto{background:var(--teal-bg);color:var(--teal);border-color:var(--teal)}
-.ct-imagen{background:#F5E8EC;color:var(--guinda);border-color:var(--guinda)}
-.q-card{background:var(--gray);border-radius:10px;padding:16px;margin-bottom:14px;font-size:14px;line-height:1.75;color:var(--text);font-style:italic;border-left:4px solid var(--red)}
-.q-card-plain{background:var(--gray);border-radius:10px;padding:16px;margin-bottom:14px;font-size:14px;color:var(--text);border-left:4px solid var(--guinda)}
-.q-img{width:100%;border-radius:8px;display:block;max-height:200px;object-fit:cover;margin-bottom:8px}
-.q-img-note{font-size:11px;color:var(--muted);display:block;font-style:italic}
-.q-label{font-family:'Montserrat',sans-serif;font-size:13px;font-weight:700;color:var(--guinda);text-transform:uppercase;letter-spacing:0.5px;text-align:center;margin-bottom:16px;line-height:1.4}
-.choices{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
-.cbtn{width:100%;padding:15px 16px;border-radius:10px;border:2px solid transparent;font-family:'Montserrat',sans-serif;font-size:0.9rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;cursor:pointer;-webkit-appearance:none;text-align:left;transition:transform 0.12s}
-.cbtn:active{transform:scale(0.97)}
-.cb-ia{background:var(--teal-bg);border-color:#9ACFD6;color:var(--teal)}
-.cb-human{background:#F5E8EC;border-color:#D9B3C2;color:var(--guinda)}
-.cbtn-sub{display:block;font-size:11px;font-weight:600;opacity:0.65;text-transform:none;margin-top:2px}
-.is-correct{border-color:#1A8A52!important;background:var(--grn-bg)!important;color:var(--green)!important;box-shadow:0 0 0 3px rgba(26,138,82,0.1)}
-.is-wrong{border-color:var(--red)!important;background:#FDECEB!important;color:var(--red)!important;box-shadow:0 0 0 3px rgba(192,57,43,0.1)}
-.feedback-box{background:var(--gold-bg);border:1px solid #E8D08A;border-left:4px solid var(--gold);border-radius:10px;padding:14px 16px;font-size:13px;line-height:1.7;color:#4A3000;margin-bottom:14px}
-.fb-head{font-family:'Montserrat',sans-serif;font-size:13px;font-weight:800;margin-bottom:5px;text-transform:uppercase}
-#s-results{padding:22px 20px 40px}
-.score-block{text-align:center;margin-bottom:22px}
-.score-ring{width:120px;height:120px;border-radius:50%;background:conic-gradient(var(--red) 0%,var(--guinda) 100%);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;box-shadow:0 8px 28px rgba(107,18,48,0.18)}
-.score-inner{width:98px;height:98px;border-radius:50%;background:#FFF;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.score-n{font-family:'Montserrat',sans-serif;font-size:2.6rem;font-weight:900;color:var(--red);line-height:1}
-.score-d{font-size:11px;color:var(--muted)}
-.res-title{font-family:'Montserrat',sans-serif;font-size:1.4rem;font-weight:900;color:var(--guinda);text-transform:uppercase;margin-bottom:6px}
-.rank-pill{display:inline-block;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;padding:5px 14px;border-radius:6px;margin-bottom:10px}
-.res-msg{font-size:13px;color:var(--muted);line-height:1.65}
-.sec-title{font-family:'Montserrat',sans-serif;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:2px;color:var(--muted);display:block;margin:20px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--border)}
-.review-item{background:var(--gray);border-radius:8px;padding:11px 14px;margin-bottom:8px}
-.ri-ok{border-left:4px solid #1A8A52}
-.ri-fail{border-left:4px solid var(--red)}
-.ri-top{display:flex;align-items:flex-start;gap:8px;margin-bottom:5px}
-.ri-icon{font-size:13px;font-weight:800;flex-shrink:0;margin-top:1px}
-.ri-q{font-size:12px;color:var(--text);line-height:1.4;flex:1}
-.ri-badges{display:flex;gap:5px;flex-wrap:wrap}
-.ri-badge{font-family:'Montserrat',sans-serif;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:0.5px;padding:2px 8px;border-radius:4px}
-.b-ok{background:var(--grn-bg);color:var(--green)}
-.b-fail{background:#FDECEB;color:var(--red)}
-.b-cor{background:var(--teal-bg);color:var(--teal)}
-.rule-card{background:var(--gray);border-radius:8px;padding:12px 14px;margin-bottom:8px;border-left:4px solid var(--teal);font-size:13px;line-height:1.6}
-.rule-card b{font-family:'Montserrat',sans-serif;font-size:11px;font-weight:800;color:var(--teal);text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:3px}
-.save-status{font-size:12px;text-align:center;margin-top:12px;padding:10px 14px;border-radius:8px}
-.save-ok{background:var(--grn-bg);color:var(--green)}
-.save-err{background:#FDECEB;color:var(--red)}
-.btn-red{display:block;width:100%;padding:16px;background:var(--red);color:#FFF;border:none;border-radius:10px;font-family:'Montserrat',sans-serif;font-size:0.95rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;cursor:pointer;box-shadow:0 6px 20px rgba(192,57,43,0.25);transition:transform 0.12s}
-.btn-red:active{transform:scale(0.97)}
-.btn-guinda{display:block;width:100%;padding:16px;background:var(--guinda);color:#FFF;border:none;border-radius:10px;font-family:'Montserrat',sans-serif;font-size:0.95rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;cursor:pointer;box-shadow:0 6px 20px rgba(107,18,48,0.22);transition:transform 0.12s;margin-top:14px}
-.btn-guinda:active{transform:scale(0.97)}
-.btn-gray{display:block;width:100%;padding:14px;background:var(--gray);color:var(--text);border:1px solid var(--border);border-radius:10px;font-family:'Montserrat',sans-serif;font-size:0.85rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;cursor:pointer;transition:transform 0.12s;margin-top:12px}
-.btn-gray:active{transform:scale(0.97)}
-.logo-bar{background:var(--gray);border-top:1px solid var(--border);padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap}
+header{background:var(--guinda);padding:18px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.hdr-act{font-family:'Montserrat',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.6);margin-bottom:4px}
+header h1{font-family:'Montserrat',sans-serif;font-size:1.4rem;font-weight:900;color:#FFF;text-transform:uppercase}
+.hdr-sub{font-family:'Montserrat',sans-serif;font-size:0.7rem;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:1px;margin-top:3px}
+.hdr-right{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.live-dot-wrap{display:flex;align-items:center;gap:6px;font-family:'Montserrat',sans-serif;font-size:10px;font-weight:800;text-transform:uppercase;color:rgba(255,255,255,0.8);letter-spacing:1px}
+.live-dot{width:8px;height:8px;border-radius:50%;background:#4ADE80;animation:blink 1.5s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+.btn{font-family:'Montserrat',sans-serif;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px;padding:9px 16px;border-radius:8px;border:none;cursor:pointer;transition:transform 0.12s}
+.btn:active{transform:scale(0.97)}
+.btn-outline{background:transparent;border:2px solid rgba(255,255,255,0.4);color:#FFF}
+.btn-danger{background:var(--red);color:#FFF}
+
+/* CONFIG BOX */
+.cfg-box{background:#FEF9EB;border:2px dashed #B8860B;border-radius:12px;padding:20px;margin:20px;font-size:14px;color:#5C4200;line-height:1.7}
+.cfg-box h2{font-family:'Montserrat',sans-serif;font-size:13px;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:#B8860B;margin-bottom:12px}
+.cfg-box ol{margin-left:18px}
+.cfg-box li{margin-bottom:6px}
+.cfg-box code{background:rgba(0,0,0,0.06);padding:2px 6px;border-radius:4px;font-size:13px;font-family:monospace}
+.cfg-input{width:100%;padding:10px 14px;border:2px solid #B8860B;border-radius:8px;font-size:14px;margin:10px 0;font-family:'Open Sans',sans-serif;background:#FFF;color:var(--text)}
+.cfg-input:focus{outline:none;border-color:var(--guinda)}
+.btn-cfg{font-family:'Montserrat',sans-serif;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:1px;padding:10px 20px;background:var(--guinda);color:#FFF;border:none;border-radius:8px;cursor:pointer}
+
+main{max-width:1100px;margin:0 auto;padding:24px 20px}
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:22px}
+.stat-card{background:var(--white);border-radius:12px;padding:20px 18px;border:1px solid var(--border)}
+.stat-lbl{font-family:'Montserrat',sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:8px}
+.stat-val{font-family:'Montserrat',sans-serif;font-size:2.2rem;font-weight:900;line-height:1}
+.stat-sub{font-size:12px;color:var(--muted);margin-top:4px}
+.sv-g{color:var(--green)}.sv-r{color:var(--red)}.sv-t{color:var(--teal)}.sv-gold{color:var(--gold)}
+
+.charts-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:22px}
+@media(max-width:640px){.charts-row{grid-template-columns:1fr}}
+.chart-card{background:var(--white);border-radius:12px;padding:20px;border:1px solid var(--border)}
+.card-title{font-family:'Montserrat',sans-serif;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.chart-wrap{position:relative;height:210px}
+
+.breakdown-card{background:var(--white);border-radius:12px;padding:20px;border:1px solid var(--border);margin-bottom:22px}
+.q-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)}
+.q-row:last-child{border-bottom:none}
+.q-num{font-family:'Montserrat',sans-serif;font-size:11px;font-weight:800;color:var(--muted);width:24px;flex-shrink:0}
+.q-name{font-size:13px;color:var(--text);flex:1;min-width:0}
+.q-bar-wrap{width:180px;flex-shrink:0}
+.q-bar-bg{background:var(--bg);border-radius:4px;height:10px;overflow:hidden;margin-bottom:3px}
+.q-bar-fill{height:100%;border-radius:4px;transition:width 0.6s}
+.q-pcts{display:flex;justify-content:space-between;font-size:10px;font-family:'Montserrat',sans-serif;font-weight:700}
+.pct-ok{color:var(--green)}.pct-fail{color:var(--red)}
+
+.table-card{background:var(--white);border-radius:12px;padding:20px;border:1px solid var(--border);margin-bottom:24px}
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead tr{border-bottom:2px solid var(--border)}
+th{font-family:'Montserrat',sans-serif;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--muted);padding:8px 12px;text-align:left;white-space:nowrap}
+td{padding:10px 12px;border-bottom:1px solid var(--border);color:var(--text)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--bg)}
+.score-badge{display:inline-block;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:800;padding:3px 10px;border-radius:5px}
+.ans-dot{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:5px;font-size:12px;font-weight:800;margin-right:2px}
+.dot-ok{background:var(--grn-bg);color:var(--green)}
+.dot-fail{background:#FDECEB;color:var(--red)}
+.empty-msg{text-align:center;padding:50px 20px;color:var(--muted);font-size:14px}
+.refresh-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;font-size:12px;color:var(--muted)}
+
+.logo-bar{background:var(--white);border-top:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap}
 .lc{font-family:'Montserrat',sans-serif;font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:4px 10px;border-radius:6px;white-space:nowrap}
 .lc-g{background:#1A1A2E;color:#FFF}
 .lc-r{background:var(--guinda);color:#FFF}
 .lc-t{background:var(--teal);color:#FFF}
 .lc-s{color:var(--guinda);border:1px solid var(--guinda)}
-/* config warning */
-.cfg-warn{background:#FEF9EB;border:2px dashed #B8860B;border-radius:10px;padding:16px;margin:20px 22px;font-size:13px;color:#5C4200;line-height:1.6;text-align:center}
-.cfg-warn b{display:block;font-family:'Montserrat',sans-serif;font-size:12px;text-transform:uppercase;letter-spacing:1px;color:#B8860B;margin-bottom:6px}
 </style>
 </head>
 <body>
 <div class="top-bar"></div>
-<header class="hdr">
-  <div class="hdr-act">Actividad 1 &middot; Rompe Hielo &middot; An&oacute;nima</div>
-  <h1>&iquest;IA o Humano?</h1>
-  <div class="hdr-sub">Mundial Social 2026 &middot; InnovaTecNM &middot; Etapa Local</div>
+<header>
+  <div>
+    <div class="hdr-act">Panel del Maestro</div>
+    <h1>Resultados en Tiempo Real</h1>
+    <div class="hdr-sub">Actividad 1 &middot; IA o Humano &middot; Mundial Social 2026</div>
+  </div>
+  <div class="hdr-right">
+    <div class="live-dot-wrap"><div class="live-dot"></div>EN VIVO</div>
+    <button class="btn btn-outline" onclick="loadData()">Actualizar</button>
+    <button class="btn btn-danger" onclick="clearData()">Limpiar datos</button>
+  </div>
 </header>
 
-<!-- START -->
-<div id="s-start" style="display:block;padding:28px 22px 24px;text-align:center">
-  <p class="start-title">&iquest;Tienes<br>ojo cr&iacute;tico?</p>
-  <p class="start-desc">Lee cada texto o imagen y decide si fue creado por una Inteligencia Artificial o por un humano.</p>
-  <div class="anon-note">
-    <b>Actividad an&oacute;nima</b>
-    No se guarda tu nombre. Solo se registra tu puntaje como dato del grupo.
-  </div>
-  <div class="chips">
-    <div class="chip"><span class="chip-n">5</span><div class="chip-l">Rondas</div></div>
-    <div class="chip"><span class="chip-n">~4</span><div class="chip-l">Min</div></div>
-    <div class="chip"><span class="chip-n">3</span><div class="chip-l">Reglas</div></div>
-  </div>
-  <button class="btn-red" onclick="startQuiz()">Comenzar &rarr;</button>
+<!-- CONFIG BOX -->
+<div id="cfg-box" class="cfg-box" style="display:none">
+  <h2>&#9888; Configura Firebase (solo la primera vez, 2 minutos)</h2>
+  <ol>
+    <li>Ve a <a href="https://console.firebase.google.com" target="_blank"><b>console.firebase.google.com</b></a> e inicia sesion con Google</li>
+    <li>Clic en <b>Agregar proyecto</b> → nombre: <code>ia-quiz-2026</code> → Continuar hasta crear</li>
+    <li>En el menu izquierdo: <b>Compilacion → Realtime Database → Crear base de datos</b></li>
+    <li>Selecciona <b>Modo de prueba</b> → Habilitar</li>
+    <li>Copia la URL que aparece (ejemplo: <code>https://ia-quiz-2026-default-rtdb.firebaseio.com</code>)</li>
+    <li>Pegala aqui abajo y haz clic en Guardar:</li>
+  </ol>
+  <input class="cfg-input" id="fb-url-input" type="text" placeholder="https://tu-proyecto-default-rtdb.firebaseio.com" />
+  <button class="btn-cfg" onclick="saveConfig()">Guardar y conectar</button>
+  <br><br>
+  <small>Despues de configurar, pega la misma URL en el archivo <code>actividad1_rompe_hielo.html</code> en la variable <code>FIREBASE_URL</code></small>
 </div>
 
-<!-- QUIZ -->
-<div id="s-quiz" style="display:none;padding:16px 20px 40px">
-  <div class="prog-row">
-    <div class="prog-track"><div class="prog-fill" id="prog" style="width:0%"></div></div>
-    <span class="prog-lbl" id="prog-lbl">1 / 5</span>
+<main>
+  <div class="refresh-row">
+    <span id="refresh-info">Conectando...</span>
+    <span id="student-count" style="font-family:Montserrat,sans-serif;font-weight:700;font-size:12px;color:var(--guinda)"></span>
   </div>
-  <div id="cat-badge"></div>
-  <div id="q-content"></div>
-  <p class="q-label" id="q-label"></p>
-  <div class="choices">
-    <button class="cbtn cb-ia" id="btn-ia" onclick="answer('ia')">
-      Inteligencia Artificial
-      <span class="cbtn-sub">Generado por una IA</span>
-    </button>
-    <button class="cbtn cb-human" id="btn-human" onclick="answer('human')">
-      Humano
-      <span class="cbtn-sub">Escrito o creado por una persona</span>
-    </button>
+
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-lbl">Alumnos</div><div class="stat-val sv-t" id="st-total">0</div><div class="stat-sub">completaron</div></div>
+    <div class="stat-card"><div class="stat-lbl">Promedio</div><div class="stat-val sv-gold" id="st-avg">--</div><div class="stat-sub">de 5 preguntas</div></div>
+    <div class="stat-card"><div class="stat-lbl">Aciertos</div><div class="stat-val sv-g" id="st-pct">--%</div><div class="stat-sub">promedio grupal</div></div>
+    <div class="stat-card"><div class="stat-lbl">Mas dificil</div><div class="stat-val sv-r" id="st-hard">--</div><div class="stat-sub">mayor % de error</div></div>
   </div>
-  <div id="feedback-wrap" style="display:none">
-    <div class="feedback-box">
-      <div class="fb-head" id="fb-head"></div>
-      <div id="fb-body"></div>
+
+  <div class="charts-row">
+    <div class="chart-card">
+      <div class="card-title">Distribucion de puntajes del grupo</div>
+      <div class="chart-wrap"><canvas id="chart-dist"></canvas></div>
     </div>
-    <button class="btn-guinda" id="btn-next" onclick="nextQ()">Siguiente pregunta</button>
+    <div class="chart-card">
+      <div class="card-title">Aciertos vs errores por pregunta</div>
+      <div class="chart-wrap"><canvas id="chart-qs"></canvas></div>
+    </div>
   </div>
-</div>
 
-<!-- RESULTS -->
-<div id="s-results" style="display:none;padding:22px 20px 40px">
-  <div class="score-block">
-    <div class="score-ring"><div class="score-inner">
-      <span class="score-n" id="res-num">0</span>
-      <span class="score-d">de 5</span>
-    </div></div>
-    <p class="res-title" id="res-title"></p>
-    <span class="rank-pill" id="rank-pill"></span>
-    <p class="res-msg" id="res-msg"></p>
+  <div class="breakdown-card">
+    <div class="card-title">Detalle por pregunta</div>
+    <div id="q-breakdown"><div class="empty-msg">Sin datos todavia.</div></div>
   </div>
-  <span class="sec-title">Resumen de respuestas</span>
-  <div id="review-list"></div>
-  <span class="sec-title">3 Reglas de Oro</span>
-  <div class="rule-card"><b>1. Busca imperfecciones naturales</b>Los humanos somos contradictorios. La IA es demasiado perfecta y coherente. Si algo suena impecable, sospecha.</div>
-  <div class="rule-card"><b>2. En imagenes: manos y texto</b>La IA falla en dedos (extras o faltantes) y texto de fondo ilegible.</div>
-  <div class="rule-card"><b>3. Verifica antes de compartir</b>Si algo te impacta emocionalmente, busca en 2 sitios confiables antes de reenviar.</div>
-  <div class="save-status" id="save-status"></div>
-  <button class="btn-gray" onclick="restart()">Jugar de nuevo</button>
-</div>
+
+  <div class="table-card">
+    <div class="card-title">Respuestas individuales anonimas</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>#</th><th>Puntaje</th><th>%</th><th>P1</th><th>P2</th><th>P3</th><th>P4</th><th>P5</th><th>Hora</th></tr></thead>
+        <tbody id="tbl-body"><tr><td colspan="9"><div class="empty-msg">Esperando respuestas de alumnos...</div></td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</main>
 
 <div class="logo-bar">
   <span class="lc lc-g">InnovaTecNM 2026</span>
@@ -176,197 +166,173 @@ body{font-family:'Open Sans',sans-serif;color:var(--text)}
 </div>
 
 <script>
+var GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbytGyla30KIeVzx-sM0WGv5MxBoZuYc8L1G7W1N8wUOXijjhYYAr7cZ-ad5OYh-pJ4J/exec";
+var distChart = null, qChart = null;
+var QN = ["Frag. literario","Mensaje chat","Parrafo etico","Foto hormiga","Tuit del flan"];
 
-var Qs = [
-  {
-    cat:"texto", shortQ:"Fragmento literario melancolico",
-    content:"El amanecer pinto el cielo de colores que ninguna pantalla puede capturar. Me quede quieta en la azotea, cafe enfriandose en la mano, pensando en todo lo que habia perdido ese anno. Era martes. Los martes siempre me golpean diferente.",
-    label:"Este fragmento fue escrito por IA o por humano?",
-    ans:"ia", fbHead:"Es IA.",
-    fb:"Texto generado por IA. El detalle del martes y la melancolia controlada son tecnicas aprendidas de millones de textos humanos."
-  },
-  {
-    cat:"texto", shortQ:"Mensaje de chat informal",
-    content:"Mira si me importa si vienes o no. Total ya me acostumbre a estar sola. Nah, no es en serio jajaja. Pero si no puedes pos ni modo. Llevas el pastel o no?",
-    label:"Este mensaje de chat fue escrito por IA o por humano?",
-    ans:"human", fbHead:"Es humano.",
-    fb:"Las contradicciones emocionales, el jajaja como escudo y el pos informal son marcadores de comunicacion humana autentica."
-  },
-  {
-    cat:"texto", shortQ:"Parrafo etico sobre IA",
-    content:"La inteligencia artificial tiene el potencial de transformar multiples industrias. Sin embargo, es crucial que su desarrollo este acompannado de un marco etico robusto que garantice la equidad, la transparencia y el respeto a los derechos humanos.",
-    label:"Este parrafo de opinion fue escrito por IA o por humano?",
-    ans:"ia", fbHead:"Es IA.",
-    fb:"Marco etico robusto, equidad y transparencia aparecen juntas miles de veces en datos de entrenamiento. El tono equilibrado sin postura personal real es clasico de los LLMs."
-  },
-  {
-    cat:"imagen", shortQ:"Foto macro de hormiga", isImg:true,
-    imgUrl:"https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Camponotus_flavomarginatus_ant.jpg/320px-Camponotus_flavomarginatus_ant.jpg",
-    imgNote:"Fotografia macro de una hormiga sobre una hoja verde",
-    label:"Esta fotografia es real o fue generada por IA?",
-    ans:"human", fbHead:"Es foto real.",
-    fb:"Fotografia real (Wikipedia Commons). La granularidad del sensor, la iluminacion organica y las imperfecciones de la hoja confirman su autenticidad."
-  },
-  {
-    cat:"texto", shortQ:"Tuit del flan y mama",
-    content:"Le dije a mi mama que no iba a comer el flan porque estoy a dieta y me respondio con un aja y me sirvio el doble. Esto es terrorismo domestico.",
-    label:"Este tuit fue escrito por IA o por humano?",
-    ans:"human", fbHead:"Es humano.",
-    fb:"El humor absurdo, la hiperbole de terrorismo domestico y el remate inesperado son rasgos de creatividad humana espontanea."
+function init() {
+  document.getElementById("cfg-box").style.display = "none";
+  loadData();
+  setInterval(loadData, 8000);
+}
+
+async function loadData() {
+  document.getElementById("refresh-info").textContent = "Actualizando...";
+  try {
+    var resp = await fetch(GOOGLE_SCRIPT_URL + "?action=get");
+    if (!resp.ok) throw new Error("HTTP " + resp.status);
+    var records = await resp.json();
+    if (!Array.isArray(records)) records = [];
+    document.getElementById("refresh-info").textContent = "Ultima actualizacion: " + new Date().toLocaleTimeString("es-MX");
+    document.getElementById("student-count").textContent = records.length + " respuesta" + (records.length !== 1 ? "s" : "") + " recibida" + (records.length !== 1 ? "s" : "");
+    render(records);
+  } catch(e) {
+    document.getElementById("refresh-info").textContent = "Error al conectar: " + e.message;
+    renderEmpty();
   }
-];
+}
 
-var cur = 0, score = 0, answered = false, history = [];
+function render(records) {
+  var n = records.length;
+  document.getElementById("st-total").textContent = n;
 
-function goTo(id) {
-  ["s-start","s-quiz","s-results"].forEach(function(sid) {
-    document.getElementById(sid).style.display = "none";
+  if (!n) { renderEmpty(); return; }
+
+  var sumScore = 0, qCorrect = [0,0,0,0,0];
+  records.forEach(function(r) {
+    sumScore += r.score;
+    var ans = r.answers || [];
+    for (var j = 0; j < 5; j++) { if (ans[j] === 1) qCorrect[j]++; }
   });
-  document.getElementById(id).style.display = "block";
-  window.scrollTo(0, 0);
+
+  var avg = (sumScore / n).toFixed(1);
+  var avgPct = Math.round(sumScore / n / 5 * 100);
+  var minIdx = 0, minVal = n + 1;
+  qCorrect.forEach(function(c, i) { if (c < minVal) { minVal = c; minIdx = i; } });
+
+  document.getElementById("st-avg").textContent = avg;
+  document.getElementById("st-pct").textContent = avgPct + "%";
+  document.getElementById("st-hard").textContent = "P" + (minIdx + 1);
+
+  // Distribution 0-5
+  var dist = [0,0,0,0,0,0];
+  records.forEach(function(r) { dist[r.score]++; });
+
+  renderCharts(dist, qCorrect, n);
+  renderBreakdown(qCorrect, n);
+  renderTable(records);
 }
 
-window.startQuiz = function() {
-  cur = 0; score = 0; history = [];
-  goTo("s-quiz");
-  renderQ();
-};
-
-function renderQ() {
-  answered = false;
-  var q = Qs[cur];
-  document.getElementById("prog").style.width = Math.round(cur / Qs.length * 100) + "%";
-  document.getElementById("prog-lbl").textContent = (cur + 1) + " / " + Qs.length;
-  var cl = q.cat === "texto" ? "ct-texto" : "ct-imagen";
-  var lb = q.cat === "texto" ? "Texto" : "Imagen";
-  document.getElementById("cat-badge").innerHTML = "<span class='cat-tag " + cl + "'>" + lb + "</span>";
-  var ce = document.getElementById("q-content");
-  if (q.isImg) {
-    ce.className = "q-card-plain";
-    ce.innerHTML = "<img class='q-img' src='" + q.imgUrl + "' alt='" + q.imgNote + "' /><span class='q-img-note'>" + q.imgNote + "</span>";
-  } else {
-    ce.className = "q-card";
-    ce.textContent = q.content;
-  }
-  document.getElementById("q-label").textContent = q.label;
-  var ia = document.getElementById("btn-ia");
-  var hu = document.getElementById("btn-human");
-  ia.disabled = false; ia.className = "cbtn cb-ia";
-  hu.disabled = false; hu.className = "cbtn cb-human";
-  document.getElementById("feedback-wrap").style.display = "none";
-  var bn = document.getElementById("btn-next");
-  bn.textContent = (cur < Qs.length - 1) ? "Siguiente pregunta" : "Ver mis resultados";
+function renderEmpty() {
+  document.getElementById("st-total").textContent = "0";
+  document.getElementById("st-avg").textContent = "--";
+  document.getElementById("st-pct").textContent = "--%";
+  document.getElementById("st-hard").textContent = "--";
+  document.getElementById("q-breakdown").innerHTML = '<div class="empty-msg">Sin datos todavia. Espera a que los alumnos completen la actividad.</div>';
+  document.getElementById("tbl-body").innerHTML = '<tr><td colspan="9"><div class="empty-msg">Esperando respuestas de alumnos...</div></td></tr>';
+  renderCharts([0,0,0,0,0,0],[0,0,0,0,0],0);
 }
 
-window.answer = function(choice) {
-  if (answered) return;
-  answered = true;
-  var q = Qs[cur];
-  var ok = (choice === q.ans);
-  if (ok) score++;
-  history.push({ shortQ: q.shortQ, ok: ok, chosen: choice, correct: q.ans });
-  var ia = document.getElementById("btn-ia");
-  var hu = document.getElementById("btn-human");
-  ia.disabled = true; hu.disabled = true;
-  if (choice === "ia") {
-    ia.className = "cbtn " + (ok ? "is-correct" : "is-wrong");
-    hu.className = "cbtn " + (ok ? "cb-human" : "is-correct");
-  } else {
-    hu.className = "cbtn " + (ok ? "is-correct" : "is-wrong");
-    ia.className = "cbtn " + (ok ? "cb-ia" : "is-correct");
-  }
-  var prefix = ok ? "Correcto. " : "Incorrecto. La respuesta es " + (q.ans === "ia" ? "IA. " : "Humano. ");
-  document.getElementById("fb-head").textContent = prefix + (ok ? q.fbHead : "");
-  document.getElementById("fb-body").textContent = q.fb;
-  document.getElementById("feedback-wrap").style.display = "block";
-  setTimeout(function() {
-    document.getElementById("feedback-wrap").scrollIntoView({ behavior:"smooth", block:"nearest" });
-  }, 80);
-};
-
-window.nextQ = function() {
-  cur++;
-  if (cur >= Qs.length) {
-    saveResult();
-    showResults();
-  } else {
-    goTo("s-quiz");
-    renderQ();
-  }
-};
-
-function showResults() {
-  var pct = score / Qs.length;
-  document.getElementById("res-num").textContent = score;
-  var title, rank, bg, col, msg;
-  if (pct >= 0.8) {
-    title="Ojo de Aguila"; rank="Detective Elite"; bg="#FBF5E0"; col="#B8860B";
-    msg="Excelente ojo critico. Recuerda: la IA mejora constantemente.";
-  } else if (pct >= 0.6) {
-    title="Buen Intento"; rank="Detective Digital"; bg="#E6F4F6"; col="#016B78";
-    msg="Detectaste la mayoria, pero la IA te engano en alguno.";
-  } else {
-    title="La IA te Gano"; rank="Aprendiz Critico"; bg="#FDECEB"; col="#C0392B";
-    msg="No te preocupes, este es el punto. La IA ya es muy convincente.";
-  }
-  document.getElementById("res-title").textContent = title;
-  var pill = document.getElementById("rank-pill");
-  pill.textContent = rank; pill.style.background = bg; pill.style.color = col; pill.style.border = "2px solid " + col;
-  document.getElementById("res-msg").textContent = msg;
-  var html = "";
-  for (var i = 0; i < history.length; i++) {
-    var h = history[i];
-    html += '<div class="review-item ' + (h.ok ? "ri-ok" : "ri-fail") + '">';
-    html += '<div class="ri-top"><span class="ri-icon" style="color:' + (h.ok ? "#1A6B3C" : "#C0392B") + '">' + (h.ok ? "&#10003;" : "&#10007;") + '</span>';
-    html += '<span class="ri-q">P' + (i+1) + '. ' + h.shortQ + '</span></div>';
-    html += '<div class="ri-badges">';
-    if (h.ok) {
-      html += '<span class="ri-badge b-ok">Correcto: ' + (h.correct==="ia"?"IA":"Humano") + '</span>';
-    } else {
-      html += '<span class="ri-badge b-fail">Tu resp: ' + (h.chosen==="ia"?"IA":"Humano") + '</span>';
-      html += '<span class="ri-badge b-cor">Correcto: ' + (h.correct==="ia"?"IA":"Humano") + '</span>';
+function renderCharts(dist, qCorrect, n) {
+  var ctx1 = document.getElementById("chart-dist").getContext("2d");
+  if (distChart) distChart.destroy();
+  distChart = new Chart(ctx1, {
+    type: "bar",
+    data: {
+      labels: ["0","1","2","3","4","5"],
+      datasets: [{
+        label: "Alumnos",
+        data: dist,
+        backgroundColor: ["#FDECEB","#FDECEB","#FEF9EB","#E6F4F6","#E8F5EE","#E8F5EE"],
+        borderColor:     ["#C0392B","#C0392B","#B8860B","#016B78","#1A6B3C","#1A6B3C"],
+        borderWidth: 2, borderRadius: 6
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        y: { beginAtZero: true, ticks: { stepSize: 1, font: { family: "Open Sans", size: 11 } }, grid: { color: "#EBEBEB" } },
+        x: { ticks: { font: { family: "Open Sans", size: 11 } }, grid: { display: false } }
+      }
     }
+  });
+
+  var ctx2 = document.getElementById("chart-qs").getContext("2d");
+  if (qChart) qChart.destroy();
+  var qErr = qCorrect.map(function(c) { return n - c; });
+  qChart = new Chart(ctx2, {
+    type: "bar",
+    data: {
+      labels: ["P1","P2","P3","P4","P5"],
+      datasets: [
+        { label: "Aciertos", data: qCorrect, backgroundColor: "#E8F5EE", borderColor: "#1A6B3C", borderWidth: 2, borderRadius: 4 },
+        { label: "Errores",  data: qErr,     backgroundColor: "#FDECEB", borderColor: "#C0392B", borderWidth: 2, borderRadius: 4 }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: "bottom", labels: { font: { family: "Open Sans", size: 11 }, boxWidth: 12, padding: 12 } } },
+      scales: {
+        y: { beginAtZero: true, ticks: { stepSize: 1, font: { family: "Open Sans", size: 11 } }, grid: { color: "#EBEBEB" } },
+        x: { ticks: { font: { family: "Open Sans", size: 11 } }, grid: { display: false } }
+      }
+    }
+  });
+}
+
+function renderBreakdown(qCorrect, n) {
+  if (!n) return;
+  var html = "";
+  QN.forEach(function(name, j) {
+    var pOk = Math.round(qCorrect[j] / n * 100);
+    var pFail = 100 - pOk;
+    var barColor = pOk >= 70 ? "#1A6B3C" : pOk >= 50 ? "#B8860B" : "#C0392B";
+    html += '<div class="q-row">';
+    html += '<span class="q-num">P' + (j+1) + '</span>';
+    html += '<span class="q-name">' + name + '</span>';
+    html += '<div class="q-bar-wrap">';
+    html += '<div class="q-bar-bg"><div class="q-bar-fill" style="width:' + pOk + '%;background:' + barColor + '"></div></div>';
+    html += '<div class="q-pcts"><span class="pct-ok">' + pOk + '% correcto</span><span class="pct-fail">' + pFail + '% error</span></div>';
     html += '</div></div>';
+  });
+  document.getElementById("q-breakdown").innerHTML = html;
+}
+
+function renderTable(records) {
+  if (!records.length) {
+    document.getElementById("tbl-body").innerHTML = '<tr><td colspan="9"><div class="empty-msg">Sin datos.</div></td></tr>';
+    return;
   }
-  document.getElementById("review-list").innerHTML = html;
-  goTo("s-results");
+  var html = "";
+  records.forEach(function(r, i) {
+    var pct = r.pct || Math.round(r.score / 5 * 100);
+    var sc = pct >= 80 ? "#1A6B3C" : pct >= 60 ? "#B8860B" : "#C0392B";
+    var bg = pct >= 80 ? "#E8F5EE" : pct >= 60 ? "#FBF5E0" : "#FDECEB";
+    html += '<tr>';
+    html += '<td style="color:var(--muted);font-size:12px">' + (i+1) + '</td>';
+    html += '<td><span class="score-badge" style="background:' + bg + ';color:' + sc + '">' + r.score + ' / 5</span></td>';
+    html += '<td style="font-family:Montserrat,sans-serif;font-weight:800;color:' + sc + '">' + pct + '%</td>';
+    var ans = r.answers || [];
+    for (var j = 0; j < 5; j++) {
+      var ok = ans[j] === 1;
+      html += '<td><span class="ans-dot ' + (ok ? "dot-ok" : "dot-fail") + '">' + (ok ? "&#10003;" : "&#10007;") + '</span></td>';
+    }
+    html += '<td style="font-size:11px;color:var(--muted)">' + (r.ts || "--") + '</td>';
+    html += '</tr>';
+  });
+  document.getElementById("tbl-body").innerHTML = html;
 }
 
-var STORAGE_KEY = "ia_quiz_resultados_2026";
-var GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwrRK5dWSC_CCb1CXYuPKsJCCy30BKz6XL1-znOEFFEaxD1UwqRujIygL-x3uFrKNM/exec";
-
-function saveResult() {
-  var answersArr = history.map(function(h) { return h.ok ? 1 : 0; });
-  var record = {
-    score: score,
-    total: Qs.length,
-    pct: Math.round(score / Qs.length * 100),
-    answers: answersArr,
-    ts: new Date().toLocaleTimeString("es-MX", {hour:"2-digit", minute:"2-digit"})
-  };
-  var statusEl = document.getElementById("save-status");
-
-  var img = new Image();
-  var params = "score=" + record.score +
-    "&total=" + record.total +
-    "&pct=" + record.pct +
-    "&answers=" + record.answers.join(",") +
-    "&ts=" + encodeURIComponent(record.ts);
-  img.src = GOOGLE_SCRIPT_URL + "?" + params;
-  img.onload = function() {
-    statusEl.className = "save-status save-ok";
-    statusEl.textContent = "Resultado guardado. El maestro puede verlo en el panel.";
-  };
-  img.onerror = function() {
-    statusEl.className = "save-status save-ok";
-    statusEl.textContent = "Resultado enviado al panel del maestro.";
-  };
+async function clearData() {
+  if (!confirm("Borrar todos los resultados del grupo?")) return;
+  try {
+    await fetch(GOOGLE_SCRIPT_URL + "?action=clear");
+    loadData();
+  } catch(e) { alert("Error al borrar: " + e.message); }
 }
 
-window.restart = function() {
-  cur = 0; score = 0; history = [];
-  goTo("s-start");
-};
+init();
 </script>
 </body>
 </html>
