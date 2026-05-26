@@ -750,7 +750,7 @@
     (function () {
       var STORAGE_KEY = "ia_quiz_resultados_2026";
       /* PEGA AQUI la URL de tu Google Apps Script cuando lo publiques */
-      var GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbytGyla30KIeVzx-sM0WGv5MxBoZuYc8L1G7W1N8wUOXijjhYYAr7cZ-ad5OYh-pJ4J/exec";
+      var GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwrRK5dWSC_CCb1CXYuPKsJCCy30BKz6XL1-znOEFFEaxD1UwqRujIygL-x3uFrKNM/exec";
 
       var Qs = [
         {
@@ -958,7 +958,7 @@
         } catch (e) { }
 
         // Envio centralizado a Google Sheets mediante Apps Script
-        if (!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL.indexOf("https://script.google.com/macros/s/AKfycbytGyla30KIeVzx-sM0WGv5MxBoZuYc8L1G7W1N8wUOXijjhYYAr7cZ-ad5OYh-pJ4J/exec") >= 0) {
+        if (!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL.indexOf("https://script.google.com/macros/s/AKfycbwrRK5dWSC_CCb1CXYuPKsJCCy30BKz6XL1-znOEFFEaxD1UwqRujIygL-x3uFrKNM/exec") >= 0) {
           el("send-status").textContent = "Resultado guardado solo en este dispositivo. Falta pegar la URL de Apps Script.";
           return;
         }
