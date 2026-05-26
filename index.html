@@ -102,7 +102,7 @@ body{font-family:'Open Sans',sans-serif;color:var(--text)}
   <h1>&iquest;IA o Humano?</h1>
   <div class="hdr-sub">Mundial Social 2026 &middot; InnovaTecNM &middot; Etapa Local</div>
 </header>
-
+ 
 <!-- START -->
 <div id="s-start" style="display:block;padding:28px 22px 24px;text-align:center">
   <p class="start-title">&iquest;Tienes<br>ojo cr&iacute;tico?</p>
@@ -118,7 +118,7 @@ body{font-family:'Open Sans',sans-serif;color:var(--text)}
   </div>
   <button class="btn-red" onclick="startQuiz()">Comenzar &rarr;</button>
 </div>
-
+ 
 <!-- QUIZ -->
 <div id="s-quiz" style="display:none;padding:16px 20px 40px">
   <div class="prog-row">
@@ -146,7 +146,7 @@ body{font-family:'Open Sans',sans-serif;color:var(--text)}
     <button class="btn-guinda" id="btn-next" onclick="nextQ()">Siguiente pregunta</button>
   </div>
 </div>
-
+ 
 <!-- RESULTS -->
 <div id="s-results" style="display:none;padding:22px 20px 40px">
   <div class="score-block">
@@ -167,16 +167,16 @@ body{font-family:'Open Sans',sans-serif;color:var(--text)}
   <div class="save-status" id="save-status"></div>
   <button class="btn-gray" onclick="restart()">Jugar de nuevo</button>
 </div>
-
+ 
 <div class="logo-bar">
   <span class="lc lc-g">InnovaTecNM 2026</span>
   <span class="lc lc-r">Mundial Social</span>
   <span class="lc lc-t">TecNM</span>
   <span class="lc lc-s">Ciencia y Tecnologia SEP</span>
 </div>
-
+ 
 <script>
-
+ 
 var Qs = [
   {
     cat:"texto", shortQ:"Fragmento literario melancolico",
@@ -215,9 +215,9 @@ var Qs = [
     fb:"El humor absurdo, la hiperbole de terrorismo domestico y el remate inesperado son rasgos de creatividad humana espontanea."
   }
 ];
-
-var cur = 0, score = 0, answered = false, history = [];
-
+ 
+var cur = 0, score = 0, answered = false, respuestas = [];
+ 
 function goTo(id) {
   ["s-start","s-quiz","s-results"].forEach(function(sid) {
     document.getElementById(sid).style.display = "none";
@@ -225,13 +225,13 @@ function goTo(id) {
   document.getElementById(id).style.display = "block";
   window.scrollTo(0, 0);
 }
-
+ 
 window.startQuiz = function() {
-  cur = 0; score = 0; history = [];
+  cur = 0; score = 0; respuestas = [];
   goTo("s-quiz");
   renderQ();
 };
-
+ 
 function renderQ() {
   answered = false;
   var q = Qs[cur];
@@ -257,14 +257,14 @@ function renderQ() {
   var bn = document.getElementById("btn-next");
   bn.textContent = (cur < Qs.length - 1) ? "Siguiente pregunta" : "Ver mis resultados";
 }
-
+ 
 window.answer = function(choice) {
   if (answered) return;
   answered = true;
   var q = Qs[cur];
   var ok = (choice === q.ans);
   if (ok) score++;
-  history.push({ shortQ: q.shortQ, ok: ok, chosen: choice, correct: q.ans });
+  respuestas.push({ shortQ: q.shortQ, ok: ok, chosen: choice, correct: q.ans });
   var ia = document.getElementById("btn-ia");
   var hu = document.getElementById("btn-human");
   ia.disabled = true; hu.disabled = true;
@@ -283,7 +283,7 @@ window.answer = function(choice) {
     document.getElementById("feedback-wrap").scrollIntoView({ behavior:"smooth", block:"nearest" });
   }, 80);
 };
-
+ 
 window.nextQ = function() {
   cur++;
   if (cur >= Qs.length) {
@@ -294,7 +294,7 @@ window.nextQ = function() {
     renderQ();
   }
 };
-
+ 
 function showResults() {
   var pct = score / Qs.length;
   document.getElementById("res-num").textContent = score;
@@ -314,8 +314,8 @@ function showResults() {
   pill.textContent = rank; pill.style.background = bg; pill.style.color = col; pill.style.border = "2px solid " + col;
   document.getElementById("res-msg").textContent = msg;
   var html = "";
-  for (var i = 0; i < history.length; i++) {
-    var h = history[i];
+  for (var i = 0; i < respuestas.length; i++) {
+    var h = respuestas[i];
     html += '<div class="review-item ' + (h.ok ? "ri-ok" : "ri-fail") + '">';
     html += '<div class="ri-top"><span class="ri-icon" style="color:' + (h.ok ? "#1A6B3C" : "#C0392B") + '">' + (h.ok ? "&#10003;" : "&#10007;") + '</span>';
     html += '<span class="ri-q">P' + (i+1) + '. ' + h.shortQ + '</span></div>';
@@ -331,12 +331,12 @@ function showResults() {
   document.getElementById("review-list").innerHTML = html;
   goTo("s-results");
 }
-
+ 
 var STORAGE_KEY = "ia_quiz_resultados_2026";
 var GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwrRK5dWSC_CCb1CXYuPKsJCCy30BKz6XL1-znOEFFEaxD1UwqRujIygL-x3uFrKNM/exec";
-
+ 
 function saveResult() {
-  var answersArr = history.map(function(h) { return h.ok ? 1 : 0; });
+  var answersArr = respuestas.map(function(h) { return h.ok ? 1 : 0; });
   var record = {
     score: score,
     total: Qs.length,
@@ -345,7 +345,7 @@ function saveResult() {
     ts: new Date().toLocaleTimeString("es-MX", {hour:"2-digit", minute:"2-digit"})
   };
   var statusEl = document.getElementById("save-status");
-
+ 
   var img = new Image();
   var params = "score=" + record.score +
     "&total=" + record.total +
@@ -362,12 +362,11 @@ function saveResult() {
     statusEl.textContent = "Resultado enviado al panel del maestro.";
   };
 }
-
+ 
 window.restart = function() {
-  cur = 0; score = 0; history = [];
+  cur = 0; score = 0; respuestas = [];
   goTo("s-start");
 };
 </script>
 </body>
 </html>
-
