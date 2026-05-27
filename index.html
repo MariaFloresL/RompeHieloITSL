@@ -327,36 +327,52 @@ function showResults() {
 }
 
 /* ============================================================
-   saveResult — CORREGIDA
-   Envía columnas con los nombres exactos que lee el dashboard:
-   Hora, Puntaje, Total, %, P1, P2, P3, P4, P5
+   saveResult — compatible con móvil
+   Usa fetch(no-cors) + URLSearchParams para encoding correcto
+   en todos los dispositivos. Fallback a Image() si fetch falla.
    ============================================================ */
 function saveResult() {
   var answersArr = respuestas.map(function(h) { return h.ok ? 1 : 0; });
   var hora = new Date().toLocaleTimeString("es-MX", {hour:"2-digit", minute:"2-digit"});
   var pct  = Math.round(score / Qs.length * 100);
 
-  var params = "Hora="    + encodeURIComponent(hora) +
-    "&Puntaje=" + score +
-    "&Total="   + Qs.length +
-    "&%25="     + pct +
-    "&P1="      + answersArr[0] +
-    "&P2="      + answersArr[1] +
-    "&P3="      + answersArr[2] +
-    "&P4="      + answersArr[3] +
-    "&P5="      + answersArr[4];
+  /* URLSearchParams maneja el encoding de "%" correctamente en todos los browsers */
+  var params = new URLSearchParams({
+    "Hora":    hora,
+    "Puntaje": String(score),
+    "Total":   String(Qs.length),
+    "%":       String(pct),
+    "P1":      String(answersArr[0]),
+    "P2":      String(answersArr[1]),
+    "P3":      String(answersArr[2]),
+    "P4":      String(answersArr[3]),
+    "P5":      String(answersArr[4])
+  });
 
+  var url = GOOGLE_SCRIPT_URL + "?" + params.toString();
   var statusEl = document.getElementById("save-status");
-  var img = new Image();
-  img.src = GOOGLE_SCRIPT_URL + "?" + params;
-  img.onload = function() {
+
+  function onSuccess() {
     statusEl.className = "save-status save-ok";
     statusEl.textContent = "Resultado guardado. El maestro puede verlo en el panel.";
-  };
-  img.onerror = function() {
-    statusEl.className = "save-status save-ok";
-    statusEl.textContent = "Resultado enviado al panel del maestro.";
-  };
+  }
+
+  /* fetch con no-cors: funciona en móvil, no requiere que el servidor devuelva CORS headers */
+  if (typeof fetch !== "undefined") {
+    fetch(url, { method: "GET", mode: "no-cors" })
+      .then(onSuccess)
+      .catch(function() {
+        /* Fallback: Image pixel */
+        var img = new Image();
+        img.onload = img.onerror = onSuccess;
+        img.src = url;
+      });
+  } else {
+    /* Fallback para browsers muy antiguos */
+    var img = new Image();
+    img.onload = img.onerror = onSuccess;
+    img.src = url;
+  }
 }
 
 window.restart = function() {
@@ -366,3 +382,4 @@ window.restart = function() {
 </script>
 </body>
 </html>
+
