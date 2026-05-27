@@ -326,13 +326,26 @@ function showResults() {
   goTo("s-results");
 }
 
+/* ============================================================
+   saveResult — CORREGIDA
+   Envía columnas con los nombres exactos que lee el dashboard:
+   Hora, Puntaje, Total, %, P1, P2, P3, P4, P5
+   ============================================================ */
 function saveResult() {
   var answersArr = respuestas.map(function(h) { return h.ok ? 1 : 0; });
-  var params = "score=" + score +
-    "&total=" + Qs.length +
-    "&pct=" + Math.round(score / Qs.length * 100) +
-    "&answers=" + answersArr.join(",") +
-    "&ts=" + encodeURIComponent(new Date().toLocaleTimeString("es-MX", {hour:"2-digit", minute:"2-digit"}));
+  var hora = new Date().toLocaleTimeString("es-MX", {hour:"2-digit", minute:"2-digit"});
+  var pct  = Math.round(score / Qs.length * 100);
+
+  var params = "Hora="    + encodeURIComponent(hora) +
+    "&Puntaje=" + score +
+    "&Total="   + Qs.length +
+    "&%25="     + pct +
+    "&P1="      + answersArr[0] +
+    "&P2="      + answersArr[1] +
+    "&P3="      + answersArr[2] +
+    "&P4="      + answersArr[3] +
+    "&P5="      + answersArr[4];
+
   var statusEl = document.getElementById("save-status");
   var img = new Image();
   img.src = GOOGLE_SCRIPT_URL + "?" + params;
